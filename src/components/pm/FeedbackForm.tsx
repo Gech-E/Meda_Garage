@@ -113,7 +113,7 @@ export function FeedbackForm({ onDone }: { onDone?: () => void }) {
           {PAIN_POINTS.map((pain) => (
             <label key={pain} className="flex items-start gap-2 rounded-xl border border-border p-3 text-sm">
               <Checkbox checked={painPoints.includes(pain)} onCheckedChange={(checked) =>
-                setPainPoints((current) => checked === true ? [...current, pain] : current.filter((x) => x !== pain)
+                setPainPoints((current) => checked === true ? [...current, pain] : current.filter((x) => x !== pain))
               } />
               <span>{pain}</span>
             </label>
