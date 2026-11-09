@@ -14,7 +14,7 @@ import { ROLE_LABEL } from "@/lib/pm/types";
 export const Route = createFileRoute("/research")({
   head: () => ({
     meta: [
-      { title: "Interview results — PartMatch research" },
+      { title: "Interview results — Meda Garage PartMatch" },
       { name: "description", content: "Aggregate interview activity, funnel and feedback export." },
       { property: "og:title", content: "Interview results — PartMatch research" },
       { property: "og:description", content: "Aggregate interview activity, funnel and feedback export." },
@@ -40,7 +40,7 @@ function Research() {
   const funnel = [
     ["Requests submitted", m.requests],
     ["Fitment approved", m.approved],
-    ["Received an offer", m.withOffers],
+    ["Received a confirmed offer", m.withConfirmedOffers],
     ["Reserved", m.reservations],
     ["Outcome recorded", m.outcomes],
   ] as const;
@@ -84,6 +84,30 @@ function Research() {
               <div key={k as string} className="rounded-xl bg-secondary p-4"><dt className="text-sm text-muted-foreground">{k}</dt><dd className="text-2xl font-semibold">{fmt(v as number | null)}</dd></div>
             ))}
           </dl>
+        </Panel>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Panel>
+          <h2 className="mb-4 font-semibold">Sourcing pain points reported</h2>
+          <ul className="space-y-2 text-sm">
+            {m.painPoints.map(({key, count}) => (
+              <li key={key} className="flex justify-between gap-3"><span>{key}</span><strong>{count}</strong></li>
+            ))}
+          </ul>
+        </Panel>
+        <Panel>
+          <h2 className="mb-4 font-semibold">Willingness to try / pay</h2>
+          <p className="mb-2 text-xs text-muted-foreground">Self-reported intent only; not actual customer payments.</p>
+          <div className="space-y-2 text-sm">
+            {m.wouldTry.map(({key, count}) => (
+              <div key={key} className="flex justify-between"><span>Try: {key}</span><strong>{count}</strong></div>
+            ))}
+            <hr className="border-border" />
+            {m.wouldPay.map(({key, count}) => (
+              <div key={key} className="flex justify-between"><span>Pay: {key.replaceAll("_"," ")}</span><strong>{count}</strong></div>
+            ))}
+          </div>
         </Panel>
       </div>
 

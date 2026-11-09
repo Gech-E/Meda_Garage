@@ -1,38 +1,32 @@
-# Verified Part Match MVP ("PartMatch" — working name)
+# Meda Garage — PartMatch MVP
 
-Research prototype for moderated customer interviews in Addis Ababa. Value proposition under test:
-**"Find a compatible, in-stock part before you buy."**
+A focused **user-acceptance-testing prototype** for sourcing compatible spare parts in Ethiopia.
 
-## What is real vs simulated
-| Real (works end-to-end) | Simulated |
-|---|---|
-| 3-step request form + review, validation, photo preview | Suppliers are "Demo supplier A/B/C" — no real shops or inventory |
-| Request ID, status tracking, history | No login; workspaces are open demo views |
-| Manual specialist review (notes required; evidence required to approve) | Reservation = intent only, no payment/booking |
-| Supplier offers in ETB, availability toggles | No AI part identification |
-| Fit outcome, feedback survey, CSV export, reset | Data lives in this browser (localStorage) |
+## Value proposition under test
+Mechanics and car owners should be able to submit a detailed part request, get a manual fitment decision, compare shop-entered availability/price quotes in ETB, and record whether they would use the service.
 
-Safety-critical parts (brakes, steering, airbags, seat belts…) are blocked. English only; Amharic not yet included (no unreviewed translations).
+## Demo flow (one browser/device only)
+1. Open **Request a part**. Choose **Mechanic / garage** or **Car owner**. Enter Toyota Corolla / 2010 / cabin air filter / Bole, then submit.
+2. In **Specialist review**, select the new request and enter an evidence-backed manual approval.
+3. In **Supplier offers**, select the approved request; enter an ETB quote, part reference, and check the stock-confirmation box. Repeat with a second price to compare.
+4. In **Buyer requests**, open the request, compare offers and choose **Reserve** (intent only).
+5. Record an outcome if appropriate, then select **Give feedback** and visit **UAT dashboard** to view metrics and export CSV.
+6. Before each interview, export data from UAT dashboard if needed, then use **Reset demo**.
 
-Storage is behind `StorageAdapter` in `src/lib/pm/store.ts`; swap `localStorageAdapter` for a backend adapter later. Business rules live in `src/lib/pm/logic.ts` (tested in `logic.test.ts`).
+## What works
+- Responsive UI for buyer request, specialist review, supplier demo quote, reservation intent, feedback, and research summary.
+- Browser-local state with reload persistence, seeded sample scenarios, backward migration from prior demo data.
+- Manual review and stock confirmation rules. Safety-critical parts are excluded.
 
-## 5-minute demo script
-1. **(0:30)** Home → explain disclosure pill. Click **Find my part**.
-2. **(1:30)** Participant enters their own car (e.g. Toyota Corolla 2010), a part (e.g. "side mirror glass"), picks a neighborhood, stays anonymous, reviews, sends. Note the request ID.
-3. **(1:00)** Interviewer: **Try as specialist** → select the request → "Approve fitment" with notes + evidence.
-4. **(1:00)** **Try as supplier** → propose two offers (different price/availability).
-5. **(0:45)** **Try as customer** → open request → compare offers → **Reserve** → record "Did the part fit?".
-6. **(0:15)** Participant clicks **Give feedback**. Interviewer opens **View interview results**.
+## Important limitations
+- The same **browser profile and device** must be used across all demo roles; data does **not** sync between phones/computers. No authentication or production database.
+- Sample suppliers and inventory are fictional examples, not live stock confirmations.
+- Quotes are manually entered, not automatically sourced from real shops.
+- No payment, actual physical fitment guarantee, binding reservation, delivery or authenticity certification.
+- Interview feedback stays in the browser until manually exported as CSV. Do not use sensitive customer information during demo.
 
-Sample journeys (Toyota Vitz cabin air filter, Suzuki Swift wiper blade) are tagged "Sample data" and excluded from all metrics.
+## Run locally
+Use Bun: `bun install`, then `bun run dev`. Tests: `bun run test`. Build: `bun run build`.
 
-## Acceptance metrics (per interview round, ≥ 8 participants)
-- Task completion: ≥ 80% submit a request without moderator help, in ≤ 3 minutes.
-- Offer comprehension: ≥ 80% correctly explain that fitment and stock are checked separately.
-- Confidence in match: average ≥ 3.5 / 5.
-- Willingness to use: average ≥ 3.5 / 5, and ≥ 50% answer 4 or 5.
-- Reservation intent: ≥ 50% of participants reserve an offer.
-- Zero participants believe a real payment or booking happened.
-
-## Reset between sessions
-Interview results → **Reset demo** (confirm). Export CSVs first.
+## User acceptance criteria
+Observe: request completion without help; ability to explain manual compatibility versus shop availability; quote comparison; task time; willingness to use/pay; and any confusion. Sample records are excluded from research counts.

@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { commit } from "@/lib/pm/store";
 import { addFeedback } from "@/lib/pm/logic";
-import { ROLE_LABEL, type Role } from "@/lib/pm/types";
+import { ROLE_LABEL, PAIN_POINTS, TIME_RANGES, WOULD_TRY_LABEL, WOULD_PAY_LABEL, type Role, type TimeRange, type WouldTry, type WouldPay } from "@/lib/pm/types";
 
 const METHODS = ["Visit Merkato / parts shops", "Ask my mechanic", "Phone or Telegram", "Social media", "Other"];
 
@@ -48,6 +48,10 @@ export function FeedbackForm({ onDone }: { onDone?: () => void }) {
   const [use, setUse] = useState(0);
   const [method, setMethod] = useState("");
   const [confusing, setConfusing] = useState("");
+  const [painPoints, setPainPoints] = useState<string[]>([]);
+  const [timeSpent, setTimeSpent] = useState<TimeRange | "">("");
+  const [wouldTry, setWouldTry] = useState<WouldTry | "">("");
+  const [wouldPay, setWouldPay] = useState<WouldPay | "">("");
   const [comments, setComments] = useState("");
   const [consent, setConsent] = useState(false);
   const [error, setError] = useState("");
@@ -64,6 +68,10 @@ export function FeedbackForm({ onDone }: { onDone?: () => void }) {
           confidence: conf,
           wouldUse: use,
           currentMethod: method,
+          painPoints,
+          timeSpent: timeSpent || undefined,
+          wouldTry: wouldTry || undefined,
+          wouldPay: wouldPay || undefined,
           confusing: confusing.trim().slice(0, 500) || undefined,
           comments: comments.trim().slice(0, 1000) || undefined,
           consent: true,
@@ -97,6 +105,40 @@ export function FeedbackForm({ onDone }: { onDone?: () => void }) {
         <select id="method" className="field" value={method} onChange={(e) => setMethod(e.target.value)}>
           <option value="">Choose one</option>
           {METHODS.map((m) => <option key={m}>{m}</option>)}
+        </select>
+      </div>
+      <fieldset>
+        <legend className="mb-2 font-medium">What is hardest about sourcing spare parts? (select any)</legend>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {PAIN_POINTS.map((pain) => (
+            <label key={pain} className="flex items-start gap-2 rounded-xl border border-border p-3 text-sm">
+              <Checkbox checked={painPoints.includes(pain)} onCheckedChange={(checked) =>
+                setPainPoints((current) => checked === true ? [...current, pain] : current.filter((x) => x !== pain)
+              } />
+              <span>{pain}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <div>
+        <Label htmlFor="timeSpent" className="mb-2 block text-base">How long do you normally spend finding a part?</Label>
+        <select className="field" id="timeSpent" value={timeSpent} onChange={(e) => setTimeSpent(e.target.value as TimeRange | "")}>
+          <option value="">Choose (optional)</option>
+          {TIME_RANGES.map((x) => <option key={x} value={x}>{x}</option>)}
+        </select>
+      </div>
+      <div>
+        <Label htmlFor="wouldTry" className="mb-2 block text-base">Would you try this kind of service?</Label>
+        <select className="field" id="wouldTry" value={wouldTry} onChange={(e) => setWouldTry(e.target.value as WouldTry | "")}>
+          <option value="">Choose (optional)</option>
+          {(Object.keys(WOULD_TRY_LABEL) as WouldTry[]).map((x) => <option key={x} value={x}>{WOULD_TRY_LABEL[x]}</option>)}
+        </select>
+      </div>
+      <div>
+        <Label htmlFor="wouldPay" className="mb-2 block text-base">Would you pay for a working version?</Label>
+        <select className="field" id="wouldPay" value={wouldPay} onChange={(e) => setWouldPay(e.target.value as WouldPay | "")}>
+          <option value="">Choose (optional)</option>
+          {(Object.keys(WOULD_PAY_LABEL) as WouldPay[]).map((x) => <option key={x} value={x}>{WOULD_PAY_LABEL[x]}</option>)}
         </select>
       </div>
       <div>

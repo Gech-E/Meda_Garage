@@ -6,16 +6,16 @@ import { cn } from "@/lib/utils";
 import { FeedbackForm } from "./FeedbackForm";
 
 const NAV = [
-  { to: "/find", label: "Find a part" },
+  { to: "/find", label: "Request a part" },
   { to: "/how-it-works", label: "How it works" },
   { to: "/feedback", label: "Interview feedback" },
 ] as const;
 
 const ROLES = [
-  { to: "/requests", label: "Try as customer" },
-  { to: "/specialist", label: "Try as specialist" },
-  { to: "/supplier", label: "Try as supplier" },
-  { to: "/research", label: "View interview results" },
+  { to: "/requests", label: "Buyer requests" },
+  { to: "/specialist", label: "Specialist review" },
+  { to: "/supplier", label: "Supplier offers" },
+  { to: "/research", label: "UAT dashboard" },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -39,8 +39,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-sm text-background">P</span>
-            PartMatch
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-sm text-background">M</span>
+            <span>Meda Garage <span className="text-xs font-normal text-muted-foreground">/ PartMatch</span></span>
           </Link>
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
             {NAV.map((n) => (
@@ -79,7 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Quick feedback</DialogTitle>
-            <DialogDescription>5 short questions. Anonymous.</DialogDescription>
+            <DialogDescription>Short anonymous user-testing questions.</DialogDescription>
           </DialogHeader>
           <FeedbackForm onDone={() => setOpen(false)} />
         </DialogContent>
