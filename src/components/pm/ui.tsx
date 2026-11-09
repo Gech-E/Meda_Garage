@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { STATUSES, STATUS_LABEL, type PartRequest, type ReviewDecision } from "@/lib/pm/types";
 
-const pill = cva("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap", {
+const pill = cva("inline-flex max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium break-words sm:whitespace-nowrap", {
   variants: {
     tone: {
       neutral: "bg-secondary text-muted-foreground border border-border",
@@ -32,20 +32,20 @@ export function decisionTone(d: ReviewDecision) {
 }
 
 export function Panel({ className, children }: { className?: string; children: ReactNode }) {
-  return <section className={cn("rounded-2xl border border-border bg-card p-5 shadow-soft sm:p-6", className)}>{children}</section>;
+  return <section className={cn("min-w-0 rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-6", className)}>{children}</section>;
 }
 
 export function PageTitle({ eyebrow, title, children, back }: { eyebrow?: string; title: string; children?: ReactNode; back?: { to: string; label: string } }) {
   return (
-    <div className="mb-8">
+    <div className="mb-6 min-w-0 sm:mb-8">
       {back && (
-        <Link to={back.to} className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to={back.to} className="mb-4 inline-flex min-h-11 items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ChevronLeft className="h-4 w-4" /> {back.label}
         </Link>
       )}
       {eyebrow && <p className="mb-2 text-sm font-medium text-primary">{eyebrow}</p>}
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
-      {children && <div className="mt-3 max-w-2xl text-lg text-muted-foreground">{children}</div>}
+      <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+      {children && <div className="mt-3 max-w-2xl break-words text-base text-muted-foreground sm:text-lg">{children}</div>}
     </div>
   );
 }

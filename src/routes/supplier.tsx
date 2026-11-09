@@ -37,15 +37,15 @@ function Supplier() {
       <PageTitle eyebrow="Demo workspace · no login" title="Supplier offers">
         Only specialist-approved requests appear here. You confirm stock and price; fitment was checked separately.
       </PageTitle>
-      <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
-        <ul className="space-y-2">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-6">
+        <ul className="grid min-w-0 max-h-80 gap-2 overflow-y-auto pr-1 sm:grid-cols-2 lg:block lg:max-h-none lg:space-y-2 lg:overflow-visible">
           {list.length === 0 && <Empty title="No approved requests">Approve one in the specialist workspace first.</Empty>}
           {list.map((r) => (
             <li key={r.id}>
               <button onClick={() => setSel(r.id)} className={cn("w-full rounded-xl border bg-card p-4 text-left", current?.id === r.id ? "border-primary" : "border-border hover:border-primary/40")}>
-                <div className="flex items-center justify-between gap-2"><span className="font-medium">{r.part.name}</span>{r.isSample && <SamplePill />}</div>
+                <div className="flex flex-wrap items-center justify-between gap-2"><span className="min-w-0 break-words font-medium">{r.part.name}</span>{r.isSample && <SamplePill />}</div>
                 <p className="text-sm text-muted-foreground">{r.vehicle.brand} {r.vehicle.model} {r.vehicle.year} · {r.neighborhood}</p>
-                <div className="mt-2 flex gap-2"><Pill tone="accent">{STATUS_LABEL[r.status]}</Pill><Pill>{r.offers.length} offers</Pill></div>
+                <div className="mt-2 flex flex-wrap gap-2"><Pill tone="accent">{STATUS_LABEL[r.status]}</Pill><Pill>{r.offers.length} offers</Pill></div>
               </button>
             </li>
           ))}
@@ -80,7 +80,7 @@ function OfferPanel({ r }: { r: PartRequest }) {
   return (
     <Panel className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold">{r.part.name}</h2>
+        <h2 className="break-words text-lg font-semibold sm:text-xl">{r.part.name}</h2>
         <p className="text-sm text-muted-foreground">{r.vehicle.brand} {r.vehicle.model} {r.vehicle.year}{r.vehicle.engine && ` · ${r.vehicle.engine}`} · {r.id}</p>
         <p className="mt-2 text-sm">Specialist note: {r.reviewNotes.at(-1)?.text}</p>
       </div>
@@ -97,7 +97,7 @@ function OfferPanel({ r }: { r: PartRequest }) {
                 </div>
                 <label className="flex items-center gap-2">
                   <span className="sr-only">Availability for {o.supplierLabel}</span>
-                  <select className="field h-10 w-auto text-sm" value={o.availability}
+                  <select className="field min-h-11 w-full text-base sm:w-auto sm:text-sm" value={o.availability}
                     onChange={(e) => { commit((s) => setOfferAvailability(s, r.id, o.id, e.target.value as Availability)); toast.success("Availability updated"); }}>
                     {(Object.keys(AVAILABILITY_LABEL) as Availability[]).map((a) => <option key={a} value={a}>{AVAILABILITY_LABEL[a]}</option>)}
                   </select>
@@ -150,7 +150,7 @@ function OfferPanel({ r }: { r: PartRequest }) {
             <span>I checked this item is available / can be sourced as stated. (This is not an authenticity or OEM certification.)</span>
           </label>
           {error && <p role="alert" className="text-sm text-destructive sm:col-span-2">{error}</p>}
-          <Button type="submit" className="sm:col-span-2">Send offer</Button>
+          <Button type="submit" className="min-h-12 w-full sm:col-span-2">Send offer</Button>
         </form>
       )}
     </Panel>

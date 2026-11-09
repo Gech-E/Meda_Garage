@@ -83,9 +83,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PartMatch — find a compatible part" },
+      { title: "Meda Garage — PartMatch" },
       { name: "description", content: "Research prototype: find a compatible, in-stock car part in Addis Ababa before you buy." },
-      { property: "og:title", content: "PartMatch — find a compatible part" },
+      { property: "og:title", content: "Meda Garage — PartMatch" },
       { property: "og:description", content: "Research prototype: find a compatible, in-stock car part before you buy." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

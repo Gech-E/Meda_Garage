@@ -33,7 +33,7 @@ function How() {
       <Panel>
         <ol className="divide-y divide-border">
           {STATUSES.map((s, i) => (
-            <li key={s} className="flex gap-4 py-4 first:pt-0 last:pb-0">
+            <li key={s} className="flex min-w-0 gap-3 py-4 sm:gap-4 first:pt-0 last:pb-0">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-semibold text-accent-foreground">{i + 1}</span>
               <div>
                 <p className="font-semibold">{STATUS_LABEL[s]}</p>
@@ -46,7 +46,7 @@ function How() {
       <p className="mt-6 text-sm text-muted-foreground">
         Brake, steering and other safety-critical parts are not accepted in this prototype.
       </p>
-      <Button asChild size="lg" className="mt-6"><Link to="/find">Find my part</Link></Button>
+      <Button asChild size="lg" className="mt-6 min-h-12 w-full sm:w-auto"><Link to="/find">Find my part</Link></Button>
     </div>
   );
 }

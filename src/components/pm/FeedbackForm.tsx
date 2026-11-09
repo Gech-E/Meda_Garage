@@ -15,7 +15,7 @@ function Scale({ id, label, low, high, value, onChange }: { id: string; label: s
   return (
     <fieldset>
       <legend className="mb-2 font-medium">{label}</legend>
-      <div className="flex gap-2" role="radiogroup" aria-label={label}>
+      <div className="flex gap-1.5 sm:gap-2" role="radiogroup" aria-label={label}>
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
@@ -25,7 +25,7 @@ function Scale({ id, label, low, high, value, onChange }: { id: string; label: s
             id={`${id}-${n}`}
             onClick={() => onChange(n)}
             className={cn(
-              "h-11 flex-1 rounded-xl border text-base font-medium transition-colors",
+              "h-12 min-w-0 flex-1 rounded-xl border text-base font-medium transition-colors",
               value === n ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:border-primary/50",
             )}
           >
@@ -91,7 +91,7 @@ export function FeedbackForm({ onDone }: { onDone?: () => void }) {
         <div className="flex flex-wrap gap-2">
           {(Object.keys(ROLE_LABEL) as Role[]).map((r) => (
             <button key={r} type="button" aria-pressed={role === r} onClick={() => setRole(r)}
-              className={cn("rounded-full border px-4 py-2 text-sm", role === r ? "border-primary bg-primary-soft text-accent-foreground" : "border-border hover:border-primary/50")}>
+              className={cn("min-h-11 rounded-full border px-4 py-2 text-sm", role === r ? "border-primary bg-primary-soft text-accent-foreground" : "border-border hover:border-primary/50")}>
               {ROLE_LABEL[r]}
             </button>
           ))}

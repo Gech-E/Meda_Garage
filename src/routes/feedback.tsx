@@ -17,7 +17,7 @@ export const Route = createFileRoute("/feedback")({
 function FeedbackPage() {
   const navigate = useNavigate();
   return (
-    <div className="max-w-xl">
+    <div className="min-w-0 max-w-xl">
       <PageTitle eyebrow="Interview feedback" title="How was it?">Five short questions. Takes about a minute.</PageTitle>
       <Panel><FeedbackForm onDone={() => navigate({ to: "/" })} /></Panel>
     </div>

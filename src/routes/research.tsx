@@ -52,11 +52,11 @@ function Research() {
         Counts include only activity from interviews on this device. The {m.sampleRequests} sample requests are excluded.
       </PageTitle>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
         {[["Requests", m.requests], ["Offers quoted", m.offers], ["Reservations", m.reservations], ["Feedback responses", m.feedback]].map(([k, v]) => (
-          <Panel key={k as string} className="p-5">
-            <p className="text-sm text-muted-foreground">{k}</p>
-            <p className="mt-1 text-3xl font-semibold">{v}</p>
+          <Panel key={k as string} className="min-w-0 p-3 sm:p-5">
+            <p className="break-words text-xs text-muted-foreground sm:text-sm">{k}</p>
+            <p className="mt-1 text-2xl font-semibold sm:text-3xl">{v}</p>
           </Panel>
         ))}
       </div>
@@ -69,7 +69,7 @@ function Research() {
               const pct = m.requests ? Math.round((v / m.requests) * 100) : 0;
               return (
                 <li key={k}>
-                  <div className="mb-1 flex justify-between text-sm"><span>{k}</span><span className="text-muted-foreground">{v} · {pct}%</span></div>
+                  <div className="mb-1 flex flex-wrap justify-between gap-1 text-sm"><span>{k}</span><span className="text-muted-foreground">{v} · {pct}%</span></div>
                   <div className="h-2 rounded-full bg-secondary"><div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${pct}%` }} /></div>
                 </li>
               );
@@ -79,9 +79,9 @@ function Research() {
         </Panel>
         <Panel>
           <h2 className="mb-4 font-semibold">Feedback averages (1–5)</h2>
-          <dl className="grid grid-cols-3 gap-3 text-center">
+          <dl className="grid grid-cols-3 gap-1.5 text-center sm:gap-3">
             {[["Ease", m.avgEase], ["Confidence", m.avgConfidence], ["Would use", m.avgWouldUse]].map(([k, v]) => (
-              <div key={k as string} className="rounded-xl bg-secondary p-4"><dt className="text-sm text-muted-foreground">{k}</dt><dd className="text-2xl font-semibold">{fmt(v as number | null)}</dd></div>
+              <div key={k as string} className="min-w-0 rounded-xl bg-secondary p-2 sm:p-4"><dt className="break-words text-[11px] leading-tight text-muted-foreground sm:text-sm">{k}</dt><dd className="text-xl font-semibold sm:text-2xl">{fmt(v as number | null)}</dd></div>
             ))}
           </dl>
         </Panel>
@@ -127,18 +127,18 @@ function Research() {
         )}
       </Panel>
 
-      <div className="flex flex-wrap gap-3">
-        <Button variant="outline" disabled={!state.feedback.length} onClick={() => download("partmatch-feedback.csv", toCsv(state.feedback.map(({ consent: _c, ...f }) => f)))}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Button className="min-h-11 w-full sm:w-auto" variant="outline" disabled={!state.feedback.length} onClick={() => download("partmatch-feedback.csv", toCsv(state.feedback.map(({ consent: _c, ...f }) => f)))}>
           <Download /> Export feedback CSV
         </Button>
-        <Button variant="outline" disabled={!real.length} onClick={() => download("partmatch-requests.csv", toCsv(real.map((r) => ({
+        <Button className="min-h-11 w-full sm:w-auto" variant="outline" disabled={!real.length} onClick={() => download("partmatch-requests.csv", toCsv(real.map((r) => ({
           id: r.id, createdAt: r.createdAt, brand: r.vehicle.brand, model: r.vehicle.model, year: r.vehicle.year, part: r.part.name,
           neighborhood: r.neighborhood, status: r.status, decision: r.decision, offers: r.offers.length, reserved: !!r.reservedOfferId, outcome: r.outcome?.result ?? "",
         }))))}>
           <Download /> Export requests CSV
         </Button>
         <AlertDialog>
-          <AlertDialogTrigger asChild><Button variant="ghost" className="text-destructive"><RotateCcw /> Reset demo</Button></AlertDialogTrigger>
+          <AlertDialogTrigger asChild><Button variant="ghost" className="min-h-11 w-full text-destructive sm:w-auto"><RotateCcw /> Reset demo</Button></AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Reset all demo data?</AlertDialogTitle>

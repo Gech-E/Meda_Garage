@@ -148,3 +148,14 @@
     outline-offset: 1px;
   }
 }
+/* Responsive safeguards for long automotive part names and touch input. */
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow-wrap: break-word; }
+  button, input, select, textarea, a { touch-action: manipulation; }
+  input, select, textarea { min-width: 0; max-width: 100%; }
+  :focus-visible { outline-offset: 2px; }
+}
+@media (max-width: 639px) {
+  .field { min-height: 2.75rem; font-size: 1rem; }
+}

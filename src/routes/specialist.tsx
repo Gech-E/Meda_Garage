@@ -53,20 +53,20 @@ function Specialist() {
       <div className="mb-5 flex flex-wrap gap-2" role="tablist">
         {FILTERS.map((f) => (
           <button key={f.k} role="tab" aria-selected={filter === f.k} onClick={() => { setFilter(f.k); setSel(undefined); }}
-            className={cn("rounded-full border px-4 py-1.5 text-sm", filter === f.k ? "border-primary bg-primary-soft text-accent-foreground font-medium" : "border-border hover:border-primary/50")}>
+            className={cn("min-h-11 rounded-full border px-4 py-2 text-sm", filter === f.k ? "border-primary bg-primary-soft text-accent-foreground font-medium" : "border-border hover:border-primary/50")}>
             {f.label} <span className="text-muted-foreground">({state.requests.filter((r) => matches(r, f.k)).length})</span>
           </button>
         ))}
       </div>
-      <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
-        <ul className="space-y-2">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-6">
+        <ul className="grid min-w-0 max-h-80 gap-2 overflow-y-auto pr-1 sm:grid-cols-2 lg:block lg:max-h-none lg:space-y-2 lg:overflow-visible">
           {list.length === 0 && <Empty title="Nothing here">No requests match this filter.</Empty>}
           {list.map((r) => (
             <li key={r.id}>
               <button onClick={() => setSel(r.id)}
                 className={cn("w-full rounded-xl border bg-card p-4 text-left transition-colors", current?.id === r.id ? "border-primary" : "border-border hover:border-primary/40")}>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium">{r.part.name}</span>
+                  <span className="min-w-0 break-words font-medium">{r.part.name}</span>
                   {r.isSample && <SamplePill />}
                 </div>
                 <p className="text-sm text-muted-foreground">{r.vehicle.brand} {r.vehicle.model} {r.vehicle.year}</p>
@@ -103,7 +103,7 @@ function ReviewPanel({ r }: { r: PartRequest }) {
     <Panel className="space-y-6">
       <div>
         <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-xl font-semibold">{r.part.name}</h2>
+          <h2 className="min-w-0 break-words text-lg font-semibold sm:text-xl">{r.part.name}</h2>
           <Pill tone="accent">{STATUS_LABEL[r.status]}</Pill>
         </div>
         <p className="text-sm text-muted-foreground">{r.id} · submitted {fmtDate(r.createdAt)}</p>
@@ -149,7 +149,7 @@ function ReviewPanel({ r }: { r: PartRequest }) {
             <div className="flex flex-wrap gap-2">
               {(["approved", "needs_info", "mismatch"] as const).map((d) => (
                 <button key={d} type="button" aria-pressed={decision === d} onClick={() => setDecision(d)}
-                  className={cn("rounded-full border px-4 py-2 text-sm", decision === d ? "border-primary bg-primary-soft text-accent-foreground font-medium" : "border-border hover:border-primary/50")}>
+                  className={cn("min-h-11 rounded-full border px-4 py-2 text-sm", decision === d ? "border-primary bg-primary-soft text-accent-foreground font-medium" : "border-border hover:border-primary/50")}>
                   {d === "approved" ? "Approve fitment" : d === "needs_info" ? "More info needed" : "Mismatch"}
                 </button>
               ))}
@@ -164,7 +164,7 @@ function ReviewPanel({ r }: { r: PartRequest }) {
             <Textarea id="evidence" maxLength={500} value={evidence} onChange={(e) => setEvidence(e.target.value)} placeholder="e.g. catalogue reference, part number cross-check, photo comparison" />
           </div>
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-          <Button type="submit">Save decision</Button>
+          <Button type="submit" className="min-h-11 w-full sm:w-auto">Save decision</Button>
         </form>
       ) : (
         <p className="border-t border-border pt-6 text-sm text-muted-foreground">Review complete. Stock and price are confirmed separately in the supplier workspace.</p>

@@ -166,11 +166,11 @@ function Find() {
   const err = (k: ErrKey) => (errors[k] ? { "aria-invalid": true, "aria-describedby": `${k}-err` } : {});
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto w-full min-w-0 max-w-2xl">
       <PageTitle title="Request a part" back={{ to: "/", label: "Home" }} />
 
       <div className="mb-6" aria-label={`Step ${step + 1} of ${STEPS.length}`}>
-        <div className="mb-2 flex justify-between text-sm">
+        <div className="mb-2 flex flex-wrap justify-between gap-x-3 gap-y-1 text-sm">
           <span className="font-medium">{STEPS[step]}</span>
           <span className="text-muted-foreground">Step {step + 1} of {STEPS.length}</span>
         </div>
@@ -190,7 +190,7 @@ function Find() {
                 <div className="grid gap-2 sm:grid-cols-2" id="buyer" tabIndex={-1}>
                   {(Object.keys(BUYER_LABEL) as BuyerType[]).map((b) => (
                     <button key={b} type="button" aria-pressed={buyerType === b} onClick={() => setBuyerType(b)}
-                      className={cn("h-12 rounded-xl border text-base transition-colors", buyerType === b ? "border-primary bg-primary-soft font-medium text-accent-foreground" : "border-border bg-card hover:border-primary/50")}>
+                      className={cn("min-h-12 rounded-xl border px-2 text-sm transition-colors sm:text-base", buyerType === b ? "border-primary bg-primary-soft font-medium text-accent-foreground" : "border-border bg-card hover:border-primary/50")}>
                       {BUYER_LABEL[b]}
                     </button>
                   ))}
@@ -255,7 +255,7 @@ function Find() {
                     <Button type="button" variant="outline" size="sm" onClick={() => setPhoto(undefined)}><Trash2 /> Remove</Button>
                   </div>
                 ) : (
-                  <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-input p-4 text-muted-foreground hover:border-primary/50 focus-within:ring-2 focus-within:ring-ring">
+                  <label className="flex min-h-12 cursor-pointer flex-wrap items-center gap-3 rounded-xl border border-dashed border-input p-4 text-muted-foreground hover:border-primary/50 focus-within:ring-2 focus-within:ring-ring">
                     <ImagePlus className="h-5 w-5" /> Add a photo · JPG, PNG or WEBP, up to 3 MB
                     <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => onPhoto(e.target.files?.[0])} />
                   </label>
@@ -279,7 +279,7 @@ function Find() {
                 <div className="grid gap-2 sm:grid-cols-2">
                   {[{ v: true, t: "Stay anonymous", d: "Recommended for this demo. Track with your request ID." }, { v: false, t: "Add contact details", d: "Optional. Saved only on this device." }].map((o) => (
                     <button key={String(o.v)} type="button" aria-pressed={anonymous === o.v} onClick={() => setAnonymous(o.v)}
-                      className={cn("rounded-xl border p-4 text-left", anonymous === o.v ? "border-primary bg-primary-soft" : "border-border hover:border-primary/50")}>
+                      className={cn("min-h-16 rounded-xl border p-4 text-left", anonymous === o.v ? "border-primary bg-primary-soft" : "border-border hover:border-primary/50")}>
                       <span className="block font-medium">{o.t}</span>
                       <span className="text-sm text-muted-foreground">{o.d}</span>
                     </button>
@@ -319,20 +319,20 @@ function Find() {
                 ["Pickup", hood, 2],
                 ["Contact", anonymous ? "Anonymous" : [name, phone].filter(Boolean).join(" · "), 2],
               ].map(([k, v, s]) => (
-                <div key={k as string} className="flex items-start justify-between gap-4 py-3">
-                  <div>
+                <div key={k as string} className="flex min-w-0 items-start justify-between gap-3 py-3">
+                  <div className="min-w-0 flex-1">
                     <dt className="text-sm text-muted-foreground">{k}</dt>
-                    <dd className="font-medium">{v}</dd>
+                    <dd className="break-words font-medium">{v}</dd>
                   </div>
-                  <button type="button" className="text-sm text-primary hover:underline" onClick={() => setStep(s as number)}>Edit</button>
+                  <button type="button" className="inline-flex min-h-11 shrink-0 items-center text-sm text-primary hover:underline" onClick={() => setStep(s as number)}>Edit</button>
                 </div>
               ))}
             </dl>
           )}
 
-          <div className="flex gap-3 pt-2">
-            {step > 0 && <Button type="button" variant="outline" size="lg" onClick={() => setStep(step - 1)}>Back</Button>}
-            <Button type="submit" size="lg" className="flex-1" disabled={submitting}>
+          <div className="flex flex-wrap gap-3 pt-2 sm:flex-nowrap">
+            {step > 0 && <Button type="button" variant="outline" size="lg" className="min-h-12 flex-1 sm:flex-none" onClick={() => setStep(step - 1)}>Back</Button>}
+            <Button type="submit" size="lg" className="min-h-12 min-w-0 flex-1" disabled={submitting}>
               {step < 3 ? "Continue" : submitting ? "Sending…" : "Send request"}
             </Button>
           </div>

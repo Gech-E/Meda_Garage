@@ -53,8 +53,8 @@ function Detail() {
         </div>
       </PageTitle>
 
-      <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
-        <div className="space-y-6">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] lg:gap-6">
+        <div className="min-w-0 space-y-5 sm:space-y-6">
           <Panel>
             <h2 className="mb-4 font-semibold">Status</h2>
             <StatusTrack request={r} />
@@ -72,7 +72,7 @@ function Detail() {
           </Panel>
         </div>
 
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-5 sm:space-y-6">
           <p className="flex gap-2 rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
             <Info className="h-4 w-4 shrink-0 text-primary" />
             A human specialist checks fitment. Nothing is approved automatically. Offers shown are demonstration offers, not live stock.
@@ -95,7 +95,7 @@ function Detail() {
           </Panel>
 
           <section>
-            <div className="mb-3 flex items-center justify-between">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-xl font-semibold">Offers</h2>
               {r.offers.length > 0 && <Pill tone="sample">Demonstration offers</Pill>}
             </div>
@@ -104,14 +104,14 @@ function Detail() {
                 {r.decision === "approved" ? "Suppliers are confirming stock." : "Offers appear after the specialist approves fitment."}
               </Empty>
             ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid min-w-0 gap-3 md:grid-cols-2">
                 {r.offers.map((o) => {
                   const reserved = r.reservedOfferId === o.id;
                   const canReserve = !r.reservedOfferId && o.availability !== "unavailable";
                   return (
-                    <div key={o.id} className={cn("rounded-2xl border bg-card p-5 shadow-soft", reserved ? "border-primary" : "border-border")}>
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="font-medium">{o.supplierLabel}</p>
+                    <div key={o.id} className={cn("min-w-0 rounded-2xl border bg-card p-4 shadow-soft sm:p-5", reserved ? "border-primary" : "border-border")}>
+                      <div className="flex flex-wrap items-start justify-between gap-2">
+                        <p className="min-w-0 break-words font-medium">{o.supplierLabel}</p>
                         {o.priceEtb === cheapest && r.offers.length > 1 && <Pill tone="accent">Lowest price</Pill>}
                       </div>
                       <p className="mt-2 text-2xl font-semibold">{formatEtb(o.priceEtb)}</p>
@@ -125,7 +125,7 @@ function Detail() {
                       {reserved ? (
                         <p className="mt-4 flex items-center gap-1.5 font-medium text-primary"><CheckCircle2 className="h-5 w-5" /> Reserved (demo intent)</p>
                       ) : canReserve ? (
-                        <Button className="mt-4 w-full" onClick={() => act(() => commit((s) => reserveOffer(s, r.id, o.id)), "Reserved. No payment taken — this is a demo.")}>
+                        <Button className="mt-4 min-h-11 w-full" onClick={() => act(() => commit((s) => reserveOffer(s, r.id, o.id)), "Reserved. No payment taken — this is a demo.")}>
                           Reserve this offer
                         </Button>
                       ) : null}
@@ -156,7 +156,7 @@ function Detail() {
                   <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Did the part fit?">
                     {(Object.keys(OUTCOME_LABEL) as FitOutcome[]).map((k) => (
                       <button key={k} type="button" role="radio" aria-checked={outcome === k} onClick={() => setOutcome(k)}
-                        className={cn("rounded-full border px-4 py-2", outcome === k ? "border-primary bg-primary-soft text-accent-foreground" : "border-border hover:border-primary/50")}>
+                        className={cn("min-h-11 rounded-full border px-4 py-2", outcome === k ? "border-primary bg-primary-soft text-accent-foreground" : "border-border hover:border-primary/50")}>
                         {OUTCOME_LABEL[k]}
                       </button>
                     ))}
@@ -165,7 +165,7 @@ function Detail() {
                     <Label htmlFor="onotes" className="mb-2 block">Notes (optional)</Label>
                     <Textarea id="onotes" maxLength={500} value={notes} onChange={(e) => setNotes(e.target.value)} />
                   </div>
-                  <Button type="submit">Save outcome</Button>
+                  <Button type="submit" className="min-h-11 w-full sm:w-auto">Save outcome</Button>
                 </form>
               )}
             </Panel>
@@ -174,7 +174,7 @@ function Detail() {
           <Panel>
             <h2 className="mb-3 font-semibold">Your request</h2>
             <dl className="grid gap-3 text-sm sm:grid-cols-2">
-              <div><dt className="text-muted-foreground">Details</dt><dd>{r.part.description || "—"}</dd></div>
+              <div><dt className="text-muted-foreground">Details</dt><dd className="break-words">{r.part.description || "—"}</dd></div>
               <div><dt className="text-muted-foreground">Part number</dt><dd>{r.part.partNumber || "—"}</dd></div>
               <div><dt className="text-muted-foreground">Pickup area</dt><dd>{r.neighborhood}</dd></div>
               <div><dt className="text-muted-foreground">Contact</dt><dd>{r.contact.anonymous ? "Anonymous" : "Provided (stored on this device)"}</dd></div>
