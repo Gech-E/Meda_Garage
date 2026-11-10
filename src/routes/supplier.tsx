@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Empty, Loading, PageTitle, Panel, Pill, SamplePill } from "@/components/pm/ui";
+import { Empty, Loading, PageTitle, Panel, Pill } from "@/components/pm/ui";
 import { cn } from "@/lib/utils";
 import { commit, useAppState } from "@/lib/pm/store";
 import { addOffer, formatEtb, setOfferAvailability } from "@/lib/pm/logic";
@@ -24,8 +24,6 @@ export const Route = createFileRoute("/supplier")({
   component: Supplier,
 });
 
-const SUPPLIERS = ["Demo supplier A", "Demo supplier B", "Demo supplier C"];
-
 function Supplier() {
   const state = useAppState();
   const [sel, setSel] = useState<string>();
@@ -34,7 +32,7 @@ function Supplier() {
   const current = list.find((r) => r.id === sel) ?? list[0];
   return (
     <div>
-      <PageTitle eyebrow="Demo workspace · no login" title="Supplier offers">
+      <PageTitle eyebrow="Pilot workspace" title="Supplier offers">
         Only specialist-approved requests appear here. You confirm stock and price; fitment was checked separately.
       </PageTitle>
       <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)] lg:gap-6">
@@ -43,7 +41,7 @@ function Supplier() {
           {list.map((r) => (
             <li key={r.id}>
               <button onClick={() => setSel(r.id)} className={cn("w-full rounded-xl border bg-card p-4 text-left", current?.id === r.id ? "border-primary" : "border-border hover:border-primary/40")}>
-                <div className="flex flex-wrap items-center justify-between gap-2"><span className="min-w-0 break-words font-medium">{r.part.name}</span>{r.isSample && <SamplePill />}</div>
+                <div className="flex flex-wrap items-center justify-between gap-2"><span className="min-w-0 break-words font-medium">{r.part.name}</span></div>
                 <p className="text-sm text-muted-foreground">{r.vehicle.brand} {r.vehicle.model} {r.vehicle.year} · {r.neighborhood}</p>
                 <div className="mt-2 flex flex-wrap gap-2"><Pill tone="accent">{STATUS_LABEL[r.status]}</Pill><Pill>{r.offers.length} offers</Pill></div>
               </button>
@@ -57,7 +55,7 @@ function Supplier() {
 }
 
 function OfferPanel({ r }: { r: PartRequest }) {
-  const [supplier, setSupplier] = useState(SUPPLIERS[0]);
+  const [supplier, setSupplier] = useState("");
   const [price, setPrice] = useState("");
   const [availability, setAvailability] = useState<Availability>("in_stock");
   const [hood, setHood] = useState(r.neighborhood);
@@ -114,8 +112,8 @@ function OfferPanel({ r }: { r: PartRequest }) {
         <form onSubmit={submit} className="grid gap-4 border-t border-border pt-6 sm:grid-cols-2" noValidate>
           <h3 className="font-medium sm:col-span-2">Propose an offer</h3>
           <div>
-            <Label htmlFor="sup" className="mb-2 block">Supplier label</Label>
-            <select id="sup" className="field" value={supplier} onChange={(e) => setSupplier(e.target.value)}>{SUPPLIERS.map((s) => <option key={s}>{s}</option>)}</select>
+            <Label htmlFor="sup" className="mb-2 block">Shop name *</Label>
+            <Input id="sup" className="h-12 text-base" required maxLength={80} autoComplete="organization" placeholder="Enter your shop name" value={supplier} onChange={(e) => setSupplier(e.target.value)} />
           </div>
           <div>
             <Label htmlFor="price" className="mb-2 block">Price (ETB) *</Label>
