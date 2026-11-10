@@ -8,14 +8,14 @@ import { FeedbackForm } from "./FeedbackForm";
 const NAV = [
   { to: "/find", label: "Request a part" },
   { to: "/how-it-works", label: "How it works" },
-  { to: "/feedback", label: "Interview feedback" },
+  { to: "/requests", label: "My requests" },
 ] as const;
 
 const ROLES = [
   { to: "/requests", label: "Buyer requests" },
   { to: "/specialist", label: "Specialist review" },
   { to: "/supplier", label: "Supplier offers" },
-  { to: "/research", label: "UAT dashboard" },
+  { to: "/research", label: "Interview results" },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -25,17 +25,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-[100dvh] min-w-0 flex-col">
-      <div className="border-b border-border bg-card">
-        <nav aria-label="Demo workspaces" className="mx-auto flex max-w-6xl snap-x items-center gap-2 overflow-x-auto overscroll-x-contain px-4 py-2 text-sm sm:gap-3 sm:px-6">
-          <span className="shrink-0 pr-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground sm:text-xs">Demo roles →</span>
-          {ROLES.map((r) => (
-            <Link key={r.to} to={r.to}
-              className={cn("inline-flex min-h-11 shrink-0 snap-start items-center whitespace-nowrap rounded-full px-3 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", pathname.startsWith(r.to) ? "bg-primary-soft text-accent-foreground font-medium" : "text-muted-foreground hover:text-foreground")}>
-              {r.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link to="/" className="flex min-w-0 items-center gap-2 text-base font-semibold tracking-tight sm:text-lg">
@@ -48,6 +37,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                 {n.label}
               </Link>
             ))}
+            <div className="relative group ml-2">
+              <button type="button" className="rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring" aria-haspopup="true" onClick={(e) => { const panel = e.currentTarget.nextElementSibling as HTMLElement | null; if (panel) panel.hidden = !panel.hidden; }}>Pilot tools</button>
+              <div hidden className="absolute right-0 z-40 mt-1 w-52 rounded-xl border border-border bg-card p-2 shadow-soft group-focus-within:block">
+                {ROLES.map((r) => <Link key={r.to} to={r.to} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary">{r.label}</Link>)}
+              </div>
+            </div>
           </nav>
           <button className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden" aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} onClick={() => setMenu(!menu)}>
             {menu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -58,7 +53,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             {NAV.map((n) => (
               <Link key={n.to} to={n.to} onClick={() => setMenu(false)} className="flex min-h-11 items-center rounded-lg px-2 py-3 text-base">{n.label}</Link>
             ))}
-            <p className="mb-2 mt-3 border-t border-border pt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Demo workspaces</p>
+            <p className="mb-2 mt-3 border-t border-border pt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Pilot tools</p>
             <div className="grid grid-cols-2 gap-2">
               {ROLES.map((r) => (
                 <Link key={r.to} to={r.to} onClick={() => setMenu(false)} className={cn("flex min-h-12 items-center rounded-xl border px-3 py-2 text-sm font-medium", pathname.startsWith(r.to) ? "border-primary bg-primary-soft text-accent-foreground" : "border-border bg-card")}>
@@ -74,8 +69,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-7 text-sm text-muted-foreground sm:flex-row sm:justify-between sm:px-6">
-          <p>Research prototype · example offers only · no payments</p>
-          <div className="flex flex-wrap gap-x-4 gap-y-2"><Link to="/feedback" className="hover:text-foreground">Give interview feedback</Link><Link to="/about" className="hover:text-foreground">About this prototype</Link></div>
+          <p>Early access pilot · Browser-local data · No payments</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2"><Link to="/feedback" className="hover:text-foreground">Give interview feedback</Link><Link to="/about" className="hover:text-foreground">About Meda Garage</Link></div>
         </div>
       </footer>
 
