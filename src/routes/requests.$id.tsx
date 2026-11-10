@@ -121,9 +121,9 @@ function Detail() {
                       <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><ShieldCheck className="h-4 w-4" /> Fitment: specialist-reviewed (manual)</p>
                       {o.notes && <p className="mt-2 text-sm">{o.notes}</p>}
                       {reserved ? (
-                        <p className="mt-4 flex items-center gap-1.5 font-medium text-primary"><CheckCircle2 className="h-5 w-5" /> Reserved (demo intent)</p>
+                        <p className="mt-4 flex items-center gap-1.5 font-medium text-primary"><CheckCircle2 className="h-5 w-5" /> Offer selected (intent only)</p>
                       ) : canReserve ? (
-                        <Button className="mt-4 min-h-11 w-full" onClick={() => act(() => commit((s) => reserveOffer(s, r.id, o.id)), "Reserved. No payment taken — this is a demo.")}>
+                        <Button className="mt-4 min-h-11 w-full" onClick={() => act(() => commit((s) => reserveOffer(s, r.id, o.id)), "Offer selected. No booking or payment was made.")}>
                           Reserve this offer
                         </Button>
                       ) : null}
