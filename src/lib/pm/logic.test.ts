@@ -23,7 +23,7 @@ const input: NewRequestInput = {
 };
 
 const offer: OfferInput = {
-  supplierLabel: "Demo supplier A",
+  supplierLabel: "Test shop",
   priceEtb: 500,
   availability: "in_stock",
   neighborhood: "Bole",
@@ -92,8 +92,10 @@ describe("Meda Garage PartMatch rules", () => {
     expect(() => reserveOffer(s, "MG-T5", o.id)).toThrow();
   });
 
-  it("metrics count only real interview activity, never sample data", () => {
+  it("starts with no fabricated activity and counts genuine submissions", () => {
     const seeded = seedState();
+    expect(seeded.requests).toEqual([]);
+    expect(seeded.feedback).toEqual([]);
     expect(computeMetrics(seeded).requests).toBe(0);
     expect(computeMetrics(seeded).offers).toBe(0);
     let state = addOffer(approved("MG-T3"), "MG-T3", offer);
@@ -131,7 +133,9 @@ describe("Meda Garage PartMatch rules", () => {
     expect(m?.version).toBe(2);
     expect(m?.feedback).toHaveLength(1);
     expect(m?.requests.find((r) => r.id === "PM-OLD")?.buyer.type).toBe("car_owner");
-    expect(m?.requests.filter((r) => r.isSample)).toHaveLength(seedState().requests.length);
+    expect(m?.requests.filter((r) => r.isSample)).toHaveLength(0);
+    const savedV2 = { ...seedState(), requests: [createRequest(seedState(), input, "MG-REAL").request, { id: "SAMPLE-VITZ", isSample: true }] };
+    expect(migrateState(savedV2)?.requests.map((r) => r.id)).toEqual(["MG-REAL"]);
     expect(migrateState({ nope: true })).toBeNull();
   });
 });
