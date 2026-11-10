@@ -37,19 +37,12 @@ function Research() {
   if (!state) return <Loading />;
   const m = computeMetrics(state);
   const real = state.requests.filter((r) => !r.isSample);
-  const funnel = [
-    ["Requests submitted", m.requests],
-    ["Fitment approved", m.approved],
-    ["Received a confirmed offer", m.withConfirmedOffers],
-    ["Reserved", m.reservations],
-    ["Outcome recorded", m.outcomes],
-  ] as const;
   const fmt = (n: number | null) => (n === null ? "—" : n.toFixed(1));
 
   return (
     <div className="space-y-8">
       <PageTitle eyebrow="Interviewer" title="Interview results">
-        Counts include only activity from interviews on this device. The {m.sampleRequests} sample requests are excluded.
+        Only activity entered on this device is included. Nothing is preloaded.
       </PageTitle>
 
       <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
@@ -63,19 +56,13 @@ function Research() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel>
-          <h2 className="mb-4 font-semibold">Funnel</h2>
-          <ul className="space-y-3">
-            {funnel.map(([k, v]) => {
-              const pct = m.requests ? Math.round((v / m.requests) * 100) : 0;
-              return (
-                <li key={k}>
-                  <div className="mb-1 flex flex-wrap justify-between gap-1 text-sm"><span>{k}</span><span className="text-muted-foreground">{v} · {pct}%</span></div>
-                  <div className="h-2 rounded-full bg-secondary"><div className="h-2 rounded-full bg-primary transition-all" style={{ width: `${pct}%` }} /></div>
-                </li>
-              );
-            })}
-          </ul>
-          <p className="mt-4 text-sm text-muted-foreground">Fit rate: {m.outcomes ? `${m.fits} of ${m.outcomes} recorded outcomes` : "no outcomes yet"}</p>
+          <h2 className="mb-4 font-semibold">Request progress</h2>
+          <dl className="space-y-3 text-sm">
+            {([["Submitted", m.requests], ["Reviewed and approved", m.approved], ["Received a confirmed offer", m.withConfirmedOffers], ["Outcome recorded", m.outcomes]] as const).map(([label, count]) => (
+              <div key={label} className="flex items-center justify-between gap-4 border-b border-border py-2 last:border-0"><dt className="text-muted-foreground">{label}</dt><dd className="font-semibold tabular-nums">{count}</dd></div>
+            ))}
+          </dl>
+          <p className="mt-4 text-sm text-muted-foreground">Fit confirmed: {m.outcomes ? `${m.fits} of ${m.outcomes} recorded outcomes` : "No outcomes recorded yet"}</p>
         </Panel>
         <Panel>
           <h2 className="mb-4 font-semibold">Feedback averages (1–5)</h2>
@@ -138,15 +125,15 @@ function Research() {
           <Download /> Export requests CSV
         </Button>
         <AlertDialog>
-          <AlertDialogTrigger asChild><Button variant="ghost" className="min-h-11 w-full text-destructive sm:w-auto"><RotateCcw /> Reset demo</Button></AlertDialogTrigger>
+          <AlertDialogTrigger asChild><Button variant="ghost" className="min-h-11 w-full text-destructive sm:w-auto"><RotateCcw /> Clear pilot data</Button></AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Reset all demo data?</AlertDialogTitle>
-              <AlertDialogDescription>This deletes every request and feedback response on this device and restores the sample data. Export first if you need it.</AlertDialogDescription>
+              <AlertDialogTitle>Clear all pilot data from this device?</AlertDialogTitle>
+              <AlertDialogDescription>This permanently removes all requests and feedback stored in this browser. It does not add any sample data back. Export first if you need a copy.</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => { resetDemo(); toast.success("Demo reset"); }}>Reset</AlertDialogAction>
+              <AlertDialogAction onClick={() => { resetDemo(); toast.success("Pilot data cleared"); }}>Reset</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
