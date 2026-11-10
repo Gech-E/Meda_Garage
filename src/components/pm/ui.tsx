@@ -32,7 +32,7 @@ export function decisionTone(d: ReviewDecision) {
 }
 
 export function Panel({ className, children }: { className?: string; children: ReactNode }) {
-  return <section className={cn("min-w-0 rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-6", className)}>{children}</section>;
+  return <section className={cn("min-w-0 rounded-2xl border border-border bg-card p-5 sm:p-7", className)}>{children}</section>;
 }
 
 export function PageTitle({ eyebrow, title, children, back }: { eyebrow?: string; title: string; children?: ReactNode; back?: { to: string; label: string } }) {
@@ -60,7 +60,7 @@ export function Loading() {
 
 export function Empty({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-2xl border border-dashed border-border px-6 py-12 text-center">
+    <div className="rounded-2xl border border-border bg-card px-6 py-12 text-center">
       <p className="font-medium">{title}</p>
       {children && <div className="mt-2 text-sm text-muted-foreground">{children}</div>}
     </div>
