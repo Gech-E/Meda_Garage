@@ -5,7 +5,7 @@ import { CheckCircle2, Info, MapPin, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Empty, Loading, PageTitle, Panel, Pill, SamplePill, StatusTrack, decisionTone, fmtDate } from "@/components/pm/ui";
+import { Empty, Loading, PageTitle, Panel, Pill, StatusTrack, decisionTone, fmtDate } from "@/components/pm/ui";
 import { cn } from "@/lib/utils";
 import { commit, useAppState } from "@/lib/pm/store";
 import { formatEtb, recordOutcome, reserveOffer } from "@/lib/pm/logic";
@@ -49,7 +49,6 @@ function Detail() {
       <PageTitle eyebrow={`Request ${r.id}`} title={r.part.name} back={{ to: "/requests", label: "My requests" }}>
         <div className="flex flex-wrap items-center gap-2 text-base">
           {r.vehicle.brand} {r.vehicle.model} {r.vehicle.year}{r.vehicle.engine && ` · ${r.vehicle.engine}`}
-          {r.isSample && <SamplePill />}
         </div>
       </PageTitle>
 
@@ -75,7 +74,7 @@ function Detail() {
         <div className="min-w-0 space-y-5 sm:space-y-6">
           <p className="flex gap-2 rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
             <Info className="h-4 w-4 shrink-0 text-primary" />
-            A human specialist checks fitment. Nothing is approved automatically. Offers shown are demonstration offers, not live stock.
+            A specialist reviews compatibility manually. Shop offers are entered by participants and are not live inventory feeds.
           </p>
 
           <Panel>
@@ -90,14 +89,13 @@ function Detail() {
                 <p className="text-xs text-muted-foreground">Manual review · {fmtDate(lastReview.at)}</p>
               </div>
             ) : (
-              <p className="mt-2 text-sm text-muted-foreground">Waiting for a specialist. You can demo this from the specialist workspace.</p>
+              <p className="mt-2 text-sm text-muted-foreground">Waiting for the compatibility review.</p>
             )}
           </Panel>
 
           <section>
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-xl font-semibold">Offers</h2>
-              {r.offers.length > 0 && <Pill tone="sample">Demonstration offers</Pill>}
             </div>
             {r.offers.length === 0 ? (
               <Empty title="No offers yet">
@@ -123,9 +121,9 @@ function Detail() {
                       <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground"><ShieldCheck className="h-4 w-4" /> Fitment: specialist-reviewed (manual)</p>
                       {o.notes && <p className="mt-2 text-sm">{o.notes}</p>}
                       {reserved ? (
-                        <p className="mt-4 flex items-center gap-1.5 font-medium text-primary"><CheckCircle2 className="h-5 w-5" /> Reserved (demo intent)</p>
+                        <p className="mt-4 flex items-center gap-1.5 font-medium text-primary"><CheckCircle2 className="h-5 w-5" /> Offer selected (intent only)</p>
                       ) : canReserve ? (
-                        <Button className="mt-4 min-h-11 w-full" onClick={() => act(() => commit((s) => reserveOffer(s, r.id, o.id)), "Reserved. No payment taken — this is a demo.")}>
+                        <Button className="mt-4 min-h-11 w-full" onClick={() => act(() => commit((s) => reserveOffer(s, r.id, o.id)), "Offer selected. No booking or payment was made.")}>
                           Reserve this offer
                         </Button>
                       ) : null}

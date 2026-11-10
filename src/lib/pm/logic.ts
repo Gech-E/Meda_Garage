@@ -10,7 +10,6 @@ import type {
   ReviewDecision,
 } from "./types";
 import { PAIN_POINTS, STATUS_LABEL, TIME_RANGES, WOULD_PAY_LABEL, WOULD_TRY_LABEL } from "./types";
-import { seedState } from "./seed";
 
 const SAFETY_CRITICAL =
   /\b(brake|brakes|caliper|rotor|steering|tie ?rod|ball ?joint|airbag|seat ?belt|abs)\b/i;
@@ -216,13 +215,14 @@ export function addFeedback(state: AppState, fb: Omit<Feedback, "id" | "createdA
 /**
  * Accepts anything read from storage and returns a valid v2 state, or null if unusable.
  * v1 → v2: requests gain `buyer` (defaults to car owner — the v1 form only served car owners);
- * sample requests are replaced by the current sample set; offers and feedback keep their data.
+ * fabricated sample requests are removed; genuine requests, quotes and feedback are preserved.
  */
 export function migrateState(raw: unknown): AppState | null {
   if (!raw || typeof raw !== "object") return null;
   const s = raw as { version?: unknown; requests?: unknown; feedback?: unknown };
   if (!Array.isArray(s.requests) || !Array.isArray(s.feedback)) return null;
-  if (s.version === 2) return s as AppState;
+  // Remove legacy samples even for browsers that already saved the old v2 state.
+  if (s.version === 2) return { ...(s as AppState), requests: (s.requests as PartRequest[]).filter((r) => !r.isSample) };
   if (s.version !== 1) return null;
   const legacy = s.requests as Array<Omit<PartRequest, "buyer"> & { buyer?: PartRequest["buyer"] }>;
   const real: PartRequest[] = legacy
@@ -230,7 +230,7 @@ export function migrateState(raw: unknown): AppState | null {
     .map((r) => ({ ...r, buyer: r.buyer ?? { type: "car_owner" } }));
   return {
     version: 2,
-    requests: [...real, ...seedState().requests],
+    requests: real,
     feedback: s.feedback as Feedback[],
   };
 }
