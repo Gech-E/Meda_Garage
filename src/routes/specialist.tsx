@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Empty, Loading, PageTitle, Panel, Pill, SamplePill, decisionTone, fmtDate } from "@/components/pm/ui";
+import { Empty, Loading, PageTitle, Panel, Pill, decisionTone, fmtDate } from "@/components/pm/ui";
 import { cn } from "@/lib/utils";
 import { commit, useAppState } from "@/lib/pm/store";
 import { recordReview, startReview } from "@/lib/pm/logic";
@@ -47,7 +47,7 @@ function Specialist() {
 
   return (
     <div>
-      <PageTitle eyebrow="Demo workspace · no login" title="Specialist review">
+      <PageTitle eyebrow="Pilot workspace" title="Specialist review">
         Check fitment manually. Notes are required for every decision. Safety-critical parts are excluded.
       </PageTitle>
       <div className="mb-5 flex flex-wrap gap-2" role="tablist">
@@ -67,7 +67,6 @@ function Specialist() {
                 className={cn("w-full rounded-xl border bg-card p-4 text-left transition-colors", current?.id === r.id ? "border-primary" : "border-border hover:border-primary/40")}>
                 <div className="flex items-center justify-between gap-2">
                   <span className="min-w-0 break-words font-medium">{r.part.name}</span>
-                  {r.isSample && <SamplePill />}
                 </div>
                 <p className="text-sm text-muted-foreground">{r.vehicle.brand} {r.vehicle.model} {r.vehicle.year}</p>
                 <div className="mt-2"><Pill tone={decisionTone(r.decision)}>{DECISION_LABEL[r.decision]}</Pill></div>
