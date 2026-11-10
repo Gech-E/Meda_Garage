@@ -37,12 +37,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                 {n.label}
               </Link>
             ))}
-            <div className="relative group ml-2">
-              <button type="button" className="rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring" aria-haspopup="true" onClick={(e) => { const panel = e.currentTarget.nextElementSibling as HTMLElement | null; if (panel) panel.hidden = !panel.hidden; }}>Pilot tools</button>
-              <div hidden className="absolute right-0 z-40 mt-1 w-52 rounded-xl border border-border bg-card p-2 shadow-soft group-focus-within:block">
+            <details className="relative ml-2">
+              <summary className="cursor-pointer list-none rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring">Pilot tools</summary>
+              <div className="absolute right-0 z-40 mt-2 w-52 rounded-xl border border-border bg-card p-2 shadow-soft">
                 {ROLES.map((r) => <Link key={r.to} to={r.to} className="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary">{r.label}</Link>)}
               </div>
-            </div>
+            </details>
           </nav>
           <button className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden" aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} onClick={() => setMenu(!menu)}>
             {menu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
